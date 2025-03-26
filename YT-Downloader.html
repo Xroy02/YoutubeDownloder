@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free YouTube Video Downloader - Download videos from YouTube in HD, MP4, 3GP, and other formats. Save YouTube videos in 1080p, 720p, 480p, 360p quality.">
+    <meta name="keywords" content="youtube downloader, youtube shorts download, youtube mp3, youtube app download, download youtube shorts, tubemate, Youtube mp4">
+    <meta name="Roy" content="YouTube Downloader Tool">
+    <meta name="robots" content="index, follow">
+    <title>YouTube Video Downloader | Free HD Video Downloads</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --primary-dark: #cc0000;
+            --secondary-color: #282828;
+            --light-color: #f9f9f9;
+            --dark-color: #212121;
+            --gray-color: #606060;
+            --light-gray: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 50px 0 30px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--gray-color);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .instructions {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .instruction-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .step-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .download-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #video-url {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        #video-url:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        #submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        #submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .video-preview {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #000;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-info {
+            margin-bottom: 20px;
+        }
+        
+        .video-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .video-info p {
+            color: var(--gray-color);
+        }
+        
+        .download-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .quality-btn {
+            background-color: white;
+            border: 2px solid var(--light-gray);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .quality-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .quality-btn i {
+            font-size: 1rem;
+        }
+        
+        .ad-container {
+            margin: 30px auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            border: 1px dashed #ccc;
+        }
+        
+        .ad-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .footer-logo h2 {
+            font-size: 1.3rem;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            #submit-btn {
+                padding: 15px;
+            }
+            
+            .download-options {
+                flex-direction: column;
+            }
+            
+            .quality-btn {
+                justify-content: center;
+            }
+            
+            .instructions {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .instruction-step {
+                width: 100%;
+                max-width: 350px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 30px 0;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .download-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <h1>YouTube<span>Downloader</span></h1>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Download YouTube Videos in HD Quality</h2>
+                <p>Fast, free and easy to use YouTube video downloader. Save videos in 1080p, 720p, 480p, 360p and MP3 format.</p>
+                
+                <div class="instructions">
+                    <div class="instruction-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Copy YouTube video URL</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Paste the URL in the box</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Hit download</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Select preferred format</div>
+                    </div>
+                </div>
+                
+                <div class="download-box">
+                    <div class="input-group">
+                        <input type="text" id="video-url" placeholder="Paste YouTube video link here..." required>
+                        <button id="submit-btn">Download</button>
+                    </div>
+                    
+                    <div class="video-preview" id="video-preview">
+                        <div class="video-container">
+                            <!-- Video iframe will be inserted here -->
+                        </div>
+                        <div class="video-info">
+                            <h3 id="video-title">Video Title</h3>
+                            <p id="video-duration">Duration: 00:00</p>
+                        </div>
+                        <div class="download-options">
+                            <button class="quality-btn" data-quality="1080"><i class="fas fa-download"></i> 1080p HD</button>
+                            <button class="quality-btn" data-quality="720"><i class="fas fa-download"></i> 720p HD</button>
+                            <button class="quality-btn" data-quality="480"><i class="fas fa-download"></i> 480p</button>
+                            <button class="quality-btn" data-quality="360"><i class="fas fa-download"></i> 360p</button>
+                            <button class="quality-btn" data-quality="mp3"><i class="fas fa-music"></i> MP3 Audio</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AdSense Banner Ad -->
+        <div class="container">
+            <div class="ad-container">
+                <div class="ad-label">Advertisement</div>
+                <!-- Replace with your AdSense code -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"
+                     crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <i class="fab fa-youtube"></i>
+                <h2>YouTube<span>Downloader</span></h2>
+            </div>
+            <p class="copyright">© 2023 YouTube Downloader. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submit-btn');
+            const videoUrlInput = document.getElementById('video-url');
+            const videoPreview = document.getElementById('video-preview');
+            const videoContainer = document.querySelector('.video-container');
+            const videoTitle = document.getElementById('video-title');
+            const videoDuration = document.getElementById('video-duration');
+            const qualityBtns = document.querySelectorAll('.quality-btn');
+            
+            // Sample function to extract video ID from URL
+            function getVideoId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+            }
+            
+            submitBtn.addEventListener('click', function() {
+                const videoUrl = videoUrlInput.value.trim();
+                
+                if (!videoUrl) {
+                    alert('Please enter a YouTube video URL');
+                    return;
+                }
+                
+                const videoId = getVideoId(videoUrl);
+                
+                if (!videoId) {
+                    alert('Invalid YouTube URL. Please check and try again.');
+                    return;
+                }
+                
+                // In a real implementation, you would call your backend API here
+                // This is just a frontend demo
+                
+                // Show video preview
+                videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                
+                // Simulate getting video info
+                videoTitle.textContent = "Sample Video Title (Retrieved from YouTube)";
+                videoDuration.textContent = "Duration: 10:30";
+                
+                // Show download options
+                videoPreview.style.display = 'block';
+                
+                // Scroll to preview
+                videoPreview.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Handle quality button clicks
+            qualityBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const quality = this.getAttribute('data-quality');
+                    const videoUrl = videoUrlInput.value.trim();
+                    const videoId = getVideoId(videoUrl);
+                    
+                    if (!videoId) return;
+                    
+                    // In a real implementation, this would generate the download link
+                    // For demo purposes, we'll just show an alert
+                    alert(`Downloading video in ${quality} quality...\n\nIn a real implementation, this would start the download process for video ID: ${videoId}`);
+                    
+                    // Here you would typically:
+                    // 1. Call your backend API with the video ID and selected quality
+                    // 2. Get the download URL from the response
+                    // 3. Either redirect to the URL or create a download link
+                });
+            });
+        });
+    </script>
+</body>
+</html>
